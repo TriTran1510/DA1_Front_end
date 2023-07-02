@@ -1,3 +1,4 @@
+import 'package:doan1/EventBus/Events/NeedRefreshBookHistoryEvent.dart';
 import 'package:doan1/data/model/datebooking.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:logger/logger.dart';
@@ -38,11 +39,12 @@ class DateBookingRepository{
       }
     });
 
-  Future<List<DateBooking>?> GetBookingDate(String userId,int page) async
+  Future<List<DateBooking>?> GetBookingDate(String userId,int page, String type) async
   => _appService.getUserDateBookingList(
           token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
           page: page,
-          userId: userId)
+          userId: userId,
+          type: type)
         .then((http) async =>
           http.response.statusCode == 200 ?
           http.data.toListDateBooking() : null);
@@ -51,6 +53,7 @@ class DateBookingRepository{
     final response = await _appService.rejectDateBooking(
         token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
         idDateBooking: dateBookingId);
+    _eventBus.fire(NeedRefreshBookHistoryEvent());
     return response.response.statusCode == 200;
   }
 
@@ -58,6 +61,7 @@ class DateBookingRepository{
     final response = await _appService.deleteDateBooking(
         token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
         idDateBooking: dateBookingId);
+    _eventBus.fire(NeedRefreshBookHistoryEvent());
     return response.response.statusCode == 200;
   }
 
@@ -65,21 +69,24 @@ class DateBookingRepository{
     final response = await _appService.approveDateBooking(
         token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
         idDateBooking: dateBookingId);
+    _eventBus.fire(NeedRefreshBookHistoryEvent());
     return response.response.statusCode == 200;
   }
 
-  Future<List<DateBooking>?> GetHotelBookingByHotelId(String hotelId) async{
+  Future<List<DateBooking>?> GetHotelBookingByHotelId(String hotelId, int page) async{
     final response = await _appService.getHotelDateBookingList(
         token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
-        idHotel: hotelId);
+        idHotel: hotelId,
+        page: page);
     return response.response.statusCode == 200 ?
     response.data.toListDateBooking() : null;
   }
 
-  Future<List<DateBooking>?> GetVehicleBookingByVehicleId(String vehicleId) async{
+  Future<List<DateBooking>?> GetVehicleBookingByVehicleId(String vehicleId, int page) async{
     final response = await _appService.getCarDateBookingList(
         token: "Bearer ${_sharedPreferences.getString(Preferences.token) as String}",
-        idCar: vehicleId);
+        idCar: vehicleId,
+        page: page);
     return response.response.statusCode == 200 ?
     response.data.toListDateBooking() : null;
   }

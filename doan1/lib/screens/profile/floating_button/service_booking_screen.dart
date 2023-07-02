@@ -1,6 +1,8 @@
 import 'package:doan1/BLOC/profile/edit_hotel/edit_hotel_item_bloc.dart';
 import 'package:doan1/BLOC/profile/manage_hotel_car/manage_service_bloc.dart';
 import 'package:doan1/BLOC/profile/profile_view/profile_bloc.dart';
+import 'package:doan1/screens/profile/check_booking/widget/booking_hotel_item.dart';
+import 'package:doan1/screens/profile/check_booking/widget/booking_vehicle_item.dart';
 import 'package:doan1/screens/profile/floating_button/widget/hotel/edit_hotel_item.dart';
 import 'package:doan1/screens/profile/floating_button/widget/vehicle/edit_vehicle_item.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +14,14 @@ import '../../../data/model/hotel.dart';
 import '../../../widgets/circle_indicator.dart';
 import '../../../widgets/silver_appbar_delegate.dart';
 
-class ManageServiceScreen extends StatefulWidget {
-  const ManageServiceScreen({Key? key}) : super(key: key);
+class ServiceBookingScreen extends StatefulWidget {
+  const ServiceBookingScreen({Key? key}) : super(key: key);
 
   @override
   _ManageServiceScreenState createState() => _ManageServiceScreenState();
 }
 
-class _ManageServiceScreenState extends State<ManageServiceScreen> with SingleTickerProviderStateMixin{
+class _ManageServiceScreenState extends State<ServiceBookingScreen> with SingleTickerProviderStateMixin{
   final ScrollController _scrollController = ScrollController();
   final ScrollController _HotelScrollController = ScrollController();
   final ScrollController _VehicleScrollController = ScrollController();
@@ -65,7 +67,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> with SingleTi
           if(state.getDataSuccess == false){
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  backgroundColor: Colors.red,
+                    backgroundColor: Colors.red,
                     content: Text('Get data failed')));
           }
           else{
@@ -139,7 +141,7 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> with SingleTi
                     automaticallyImplyLeading: false,
                     elevation: 0,
                     title: Text(
-                      'Manage Service',
+                      'Bookings of services',
                       style: GoogleFonts.raleway(
                           fontSize: 20,
                           color: Colors.black,
@@ -180,62 +182,61 @@ class _ManageServiceScreenState extends State<ManageServiceScreen> with SingleTi
               },
               body:
               BlocBuilder<ManageServiceBloc,ManageServiceState>(
-                builder: (context,state) {
-                  print("triggered builder!");
-                  return
-                TabBarView(
-                    controller: _tabController,
-                    children: [
-                      manageServiceBloc.listHotel != null ?
-                      ListView.builder(
-                        key: const PageStorageKey('hotel'),
-                        addAutomaticKeepAlives: true,
-                        controller: _HotelScrollController,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 70),
-                        itemCount: context.read<ManageServiceBloc>().listHotel!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Hotel hotel = manageServiceBloc.listHotel![index];
-                          return MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(value: manageServiceBloc),
-                              BlocProvider.value(value: profileBloc),
-                            ],
-                            child: BlocProvider<EditHotelItemBloc>(
-                                create: (context) => EditHotelItemBloc()..add(GetHotelItemEvent(hotel: hotel)),
-                                child: EditHotelItem()),
-                          );
-                        },
-                      ) :
-                      const Center(child: Text('You don\'t have any hotel')),
-                      manageServiceBloc.listVehicle != null ?
-                      ListView.builder(
-                        key: const PageStorageKey('vehicle'),
-                        addAutomaticKeepAlives: true,
-                        controller: _VehicleScrollController,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
-                        itemCount: manageServiceBloc.listVehicle!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          String vehicle = manageServiceBloc.listVehicle![index].id!;
-                          return MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(value: manageServiceBloc),
-                              BlocProvider.value(value: profileBloc),
-                            ],
-                              child: BlocProvider<EditVehicleItemBloc>(
-                                  create: (context) => EditVehicleItemBloc()..add(GetVehicleItemEvent(vehicleId: vehicle)),
-                                  child: EditVehicleItem()));
-                        },
-                      ):
-                      const Center(child: Text('You don\'t have any vehicle'))
-                    ]
-                );}
+                  builder: (context,state) {
+                    print("triggered builder!");
+                    return
+                      TabBarView(
+                          controller: _tabController,
+                          children: [
+                            manageServiceBloc.listHotel != null ?
+                            ListView.builder(
+                              key: const PageStorageKey('hotel'),
+                              addAutomaticKeepAlives: true,
+                              controller: _HotelScrollController,
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 70),
+                              itemCount: context.read<ManageServiceBloc>().listHotel!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                Hotel hotel = manageServiceBloc.listHotel![index];
+                                return MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(value: manageServiceBloc),
+                                    BlocProvider.value(value: profileBloc),
+                                  ],
+                                  child: BlocProvider<EditHotelItemBloc>(
+                                      create: (context) => EditHotelItemBloc()..add(GetHotelItemEvent(hotel: hotel)),
+                                      child: BookingHotelItem()),
+                                );
+                              },
+                            ) :
+                            const Center(child: Text('You don\'t have any hotel')),
+                            manageServiceBloc.listVehicle != null ?
+                            ListView.builder(
+                              key: const PageStorageKey('vehicle'),
+                              addAutomaticKeepAlives: true,
+                              controller: _VehicleScrollController,
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
+                              itemCount: manageServiceBloc.listVehicle!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                String vehicle = manageServiceBloc.listVehicle![index].id!;
+                                return MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(value: manageServiceBloc),
+                                      BlocProvider.value(value: profileBloc),
+                                    ],
+                                    child: BlocProvider<EditVehicleItemBloc>(
+                                        create: (context) => EditVehicleItemBloc()..add(GetVehicleItemEvent(vehicleId: vehicle)),
+                                        child: BookingVehicleItem()));
+                              },
+                            ):
+                            const Center(child: Text('You don\'t have any vehicle'))
+                          ]
+                      );}
               ),
             )
         ),
       ),
     );
   }
-
 }

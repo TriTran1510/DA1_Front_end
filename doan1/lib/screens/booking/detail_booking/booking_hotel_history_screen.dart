@@ -19,7 +19,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
     final formatCurrency = NumberFormat("#,###");
     var baseUrl = GetIt.instance.get<Dio>().options.baseUrl;
     var profileBloc = context.read<ProfileBloc>();
-    var bookHistoryBloc = context.read<BookHistoryBloc>();
     var hotelBookingItemBloc = context.read<HotelBookingItemBloc>();
 
     return BlocListener<HotelBookingItemBloc,HotelBookingItemState>(
@@ -59,9 +58,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: IconButton(
                   onPressed: () {
-                    hotelBookingItemBloc.add(HotelBookingItemInitialEvent(
-                        dateBooking: bookHistoryBloc.lsHotelBooking![hotelBookingItemBloc.index!],
-                        index: hotelBookingItemBloc.index!));
                     Navigator.pop(context);
                   },
                   icon: const Icon(
@@ -827,7 +823,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                                             TextButton(
                                               onPressed: (){
                                                 hotelBookingItemBloc.add(HotelBookingItemDeleteEvent());
-                                                bookHistoryBloc.add(GetBookingHistory());
                                                 Navigator.pop(context);
                                               },
                                               child: Text("Yes",
@@ -891,7 +886,7 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                                         TextButton(
                                           onPressed: (){
                                             hotelBookingItemBloc.add(HotelBookingItemRejectEvent());
-                                            bookHistoryBloc.add(GetBookingHistory());
+
                                             Navigator.pop(context);
                                           },
                                           child: Text("Yes",
@@ -973,7 +968,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                                       TextButton(
                                         onPressed: (){
                                           hotelBookingItemBloc.add(HotelBookingItemDeleteEvent());
-                                          bookHistoryBloc.add(GetBookingHistory());
                                           Navigator.pop(context);
                                         },
                                         child: Text("Yes",
@@ -1036,7 +1030,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                                   TextButton(
                                     onPressed: (){
                                       hotelBookingItemBloc.add(HotelBookingItemRejectEvent());
-                                      bookHistoryBloc.add(GetBookingHistory());
                                       Navigator.pop(context);
                                     },
                                     child: Text("Yes",
@@ -1076,9 +1069,6 @@ class BookingHotelHistoryScreen extends StatelessWidget {
                       const SizedBox(height: 10,),
                       ElevatedButton(
                         onPressed: (){
-                          hotelBookingItemBloc.add(HotelBookingItemInitialEvent(
-                              dateBooking: bookHistoryBloc.lsHotelBooking![hotelBookingItemBloc.index!],
-                              index: hotelBookingItemBloc.index!));
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
