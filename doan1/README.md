@@ -1,6 +1,7 @@
 # doan1
 
-A new Flutter project.
+Đây là source front end của DA1 flutter mobile app.
+Sử dụng chung với server local host 
 
 ## Getting Started
 
