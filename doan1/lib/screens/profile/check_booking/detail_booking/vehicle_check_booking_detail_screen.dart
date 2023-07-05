@@ -17,7 +17,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     final formatCurrency = NumberFormat("#,###");
     var baseUrl = GetIt.instance.get<Dio>().options.baseUrl;
-    var bookerBloc = context.read<BookerBloc>();
     var vehicleBookingItemBloc = context.read<VehicleBookingItemBloc>();
     return BlocListener<VehicleBookingItemBloc,VehicleBookingItemState>(
       listenWhen: (previous,current) =>
@@ -661,8 +660,8 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                               state.getDataSuccess == true ?
                                 vehicleBookingItemBloc.dateBooking!.suspended! == true ?
                                   Column(
-                              children: [
-                                Text(
+                                  children: [
+                                  Text(
                                   'Your reservation has been canceled',
                                   style: GoogleFonts.raleway(
                                     fontSize: 20,
@@ -671,8 +670,8 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                     color: Colors.red,
                                   ),
                                 ),
-                                const SizedBox(height: 10,),
-                                ElevatedButton(
+                                  const SizedBox(height: 10,),
+                                  ElevatedButton(
                                   onPressed: (){
                                     showDialog(context: context,
                                         builder: (context) => AlertDialog(
@@ -735,8 +734,8 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                     :
                                 vehicleBookingItemBloc.dateBooking!.approved! == true ?
                                   Column(
-                              children: [
-                                Text(
+                                  children: [
+                                    Text(
                                   'Your reservation has been approved',
                                   style: GoogleFonts.raleway(
                                     fontSize: 20,
@@ -745,8 +744,8 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                     color: Colors.green,
                                   ),
                                 ),
-                                const SizedBox(height: 10,),
-                                ElevatedButton(
+                                  const SizedBox(height: 10,),
+                                  ElevatedButton(
                                   onPressed: (){
                                     Navigator.pop(context);
                                   },
@@ -804,8 +803,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                               TextButton(
                                                 onPressed: (){
                                                   vehicleBookingItemBloc.add(VehicleBookingItemRejectEvent());
-                                                  bookerBloc.add(GetBookerEvent());
-                                                  vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                                   Navigator.pop(context);
                                                 },
                                                 child: Text("Yes",
@@ -842,8 +839,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                   child: ElevatedButton(
                                     onPressed: (){
                                       vehicleBookingItemBloc.add(VehicleBookingItemApproveEvent());
-                                      bookerBloc.add(GetBookerEvent());
-                                      vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.orange,
@@ -938,8 +933,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                               TextButton(
                                                 onPressed: (){
                                                   vehicleBookingItemBloc.add(VehicleBookingItemRejectEvent());
-                                                  bookerBloc.add(GetBookerEvent());
-                                                  vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                                   Navigator.pop(context);
                                                 },
                                                 child: Text("Yes",
@@ -976,8 +969,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                   child: ElevatedButton(
                                     onPressed: (){
                                       vehicleBookingItemBloc.add(VehicleBookingItemApproveEvent());
-                                      bookerBloc.add(GetBookerEvent());
-                                      vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.orange,
@@ -1103,8 +1094,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                               TextButton(
                                                 onPressed: (){
                                                   vehicleBookingItemBloc.add(VehicleBookingItemRejectEvent());
-                                                  bookerBloc.add(GetBookerEvent());
-                                                  vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                                   Navigator.pop(context);
                                                 },
                                                 child: Text("Yes",
@@ -1141,8 +1130,6 @@ class VehicleCheckBookingDetailScreen extends StatelessWidget{
                                   child: ElevatedButton(
                                     onPressed: (){
                                       vehicleBookingItemBloc.add(VehicleBookingItemApproveEvent());
-                                      bookerBloc.add(GetBookerEvent());
-                                      vehicleBookingItemBloc.add(VehicleBookingItemRefreshEvent());
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.orange,

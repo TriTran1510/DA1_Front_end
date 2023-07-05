@@ -17,13 +17,6 @@ class HotelCheckBookingItem extends StatelessWidget{
     var bookerBloc = context.read<BookerBloc>();
     final formatCurrency = NumberFormat("#,###");
 
-    double calculateTotalPrice() {
-      double totalPrice = 0;
-      for (var i = 0; i < hotelBookingItemBloc.lsHotelRoom!.length; i++) {
-        totalPrice += hotelBookingItemBloc.lsHotelRoom![i].price!;
-      }
-      return totalPrice;
-    }
 
     return BlocBuilder<HotelBookingItemBloc,HotelBookingItemState>(
       buildWhen: (previous, current) =>
@@ -147,10 +140,10 @@ class HotelCheckBookingItem extends StatelessWidget{
                       const Center(
                         child: CircularProgressIndicator(),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       hotelBookingItemBloc.lsHotelRoom != null ?
                       Text(
-                          'Total: ${formatCurrency.format(hotelBookingItemBloc.dateBooking!.price??0)} VNĐ',
+                          'Total: ${formatCurrency.format(hotelBookingItemBloc.dateBooking!.price!*1.1)} VNĐ',
                           style: GoogleFonts.raleway(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -188,10 +181,15 @@ class HotelCheckBookingItem extends StatelessWidget{
                       onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => MultiBlocProvider(
                           providers: [
-                            BlocProvider.value(value: hotelBookingItemBloc),
-                            BlocProvider.value(value: bookerBloc),
+                        BlocProvider<HotelBookingItemBloc>(
+                        create: (context) => HotelBookingItemBloc()..add(
+                            HotelBookingItemInitialEvent(dateBooking: hotelBookingItemBloc.dateBooking,index: 0))),
                           ],
-                            child: HotelCheckBookingDetailScreen())));
+                            child: Builder(
+                              builder: (context) {
+                                return HotelCheckBookingDetailScreen();
+                              }
+                            ))));
                       },
                       child: Text(
                         'Detail',
